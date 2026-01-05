@@ -108,7 +108,7 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
             "admin" -> {
-                startActivity(Intent(this, UserDashboardActivity::class.java))
+                startActivity(Intent(this, AdminDashboardActivity::class.java))
                 finish()
             }
             "organization" -> {

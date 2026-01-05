@@ -173,4 +173,43 @@ interface ApiService {
         @Query("center_id") centerId: Int
     ): Call<CenterProfileResponse>
 
+    // =============== ADMIN ENDPOINTS ===============
+
+    @GET("admin_dashboard_stats.php")
+    fun getAdminDashboardStats(): Call<AdminDashboardResponse>
+
+    @GET("admin_get_all_cases.php")
+    fun getAdminAllCases(
+        @Query("status") status: String? = null
+    ): Call<AdminCasesResponse>
+
+    @GET("admin_get_all_centers.php")
+    fun getAdminAllCenters(): Call<AdminCentersResponse>
+
+    @GET("admin_get_pending_donations.php")
+    fun getAdminPendingDonations(): Call<AdminDonationsResponse>
+
+    @FormUrlEncoded
+    @POST("donationapproval.php")
+    fun approveDonation(
+        @Field("donation_id") donationId: Int,
+        @Field("action") action: String
+    ): Call<AdminActionResponse>
+
+    @FormUrlEncoded
+    @POST("admin_toggle_center_status.php")
+    fun toggleCenterStatus(
+        @Field("center_id") centerId: Int,
+        @Field("is_active") isActive: Int
+    ): Call<AdminActionResponse>
+
+    @GET("admin_pending_cases.php")
+    fun getAdminPendingCases(): Call<AdminPendingCasesResponse>
+
+    @GET("admin_inprogress_cases.php")
+    fun getAdminInProgressCases(): Call<AdminInProgressCasesResponse>
+
+    @GET("admin_closed_cases.php")
+    fun getAdminClosedCases(): Call<AdminClosedCasesResponse>
+
 }

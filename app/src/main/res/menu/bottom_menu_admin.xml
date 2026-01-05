@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_admin_dashboard"
+        android:icon="@drawable/ic_home"
+        android:title="Dashboard" />
+    <item
+        android:id="@+id/nav_admin_cases"
+        android:icon="@drawable/ic_case"
+        android:title="Cases" />
+    <item
+        android:id="@+id/nav_admin_centers"
+        android:icon="@drawable/ic_location"
+        android:title="Centers" />
+    <item
+        android:id="@+id/nav_admin_donations"
+        android:icon="@drawable/ic_heart"
+        android:title="Donations" />
+</menu>
