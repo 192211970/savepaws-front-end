@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Back Arrow -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_back"
+            android:layout_marginBottom="18dp" />
+
+        <!-- Center Icon -->
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/circle_bg"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="25dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_location"
+                android:scaleType="centerInside" />
+        </LinearLayout>
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Center Details"
+            android:textColor="#0F172A"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="6dp" />
+
+        <!-- Subtitle -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complete your center profile"
+            android:textColor="#6B7280"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="28dp" />
+
+        <!-- INPUT CONTAINER -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Center Name -->
+            <TextView
+                android:text="Center Name *"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#1F2937"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/etCenterName"
+                android:hint="Enter your center name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_bg"
+                android:padding="14dp"
+                android:textSize="15sp"
+                android:inputType="textCapWords"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Address -->
+            <TextView
+                android:text="Address *"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#1F2937"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/etAddress"
+                android:hint="Enter complete address"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/edittext_bg"
+                android:padding="14dp"
+                android:textSize="15sp"
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Location Info Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                app:cardBackgroundColor="#F0FDF4"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_location"
+                        android:layout_marginEnd="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvLocationStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Detecting location..."
+                            android:textColor="#14B66A"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvCoordinates"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lat: --, Lng: --"
+                            android:textColor="#6B7280"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnRefreshLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Refresh"
+                        android:textSize="12sp"
+                        android:backgroundTint="#14B66A"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Phone -->
+            <TextView
+                android:text="Phone Number *"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#1F2937"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:hint="Enter phone number"
+                android:inputType="phone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_bg"
+                android:padding="14dp"
+                android:textSize="15sp"
+                android:layout_marginBottom="18dp" />
+
+            <!-- Email (Read-only) -->
+            <TextView
+                android:text="Email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#1F2937"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/etEmail"
+                android:hint="Email from registration"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_bg_disabled"
+                android:padding="14dp"
+                android:textSize="15sp"
+                android:textColor="#6B7280"
+                android:enabled="false"
+                android:layout_marginBottom="24dp" />
+
+        </LinearLayout>
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="Complete Registration"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:backgroundTint="#14B66A"
+            android:layout_marginBottom="18dp" />
+
+        <!-- Info Text -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your center details will be used to assign rescue cases based on location proximity."
+            android:textColor="#9CA3AF"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+</ScrollView>

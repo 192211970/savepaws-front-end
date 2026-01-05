@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">saveparse</string>
+    <string name="save_paws">SAVE PAWS</string>
+    <string name="making_a_difference">Making a difference together</string>
+    <string name="current_location">Current Location</string>
+    <string name="your_city">Your City</string>
+    <string name="report_a_case">Report a Case</string>
+    <string name="help_an_animal">Help an animal in need</string>
+    <string name="make_a_donation">Make a Donation</string>
+    <string name="support_rescue_centers">Support rescue centers</string>
+    <string name="track_your_cases">Track your cases</string>
+    <string name="get_real_time_status">Get real-time status</string>
+    <string name="track">Track</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    
+    <!-- Case Tracking -->
+    <string name="your_cases">Your Cases</string>
+    <string name="case_tracking">Case Tracking</string>
+    <string name="tracking_timeline">Tracking Timeline</string>
+    <string name="no_cases_found">No Cases Found</string>
+    <string name="report_first_case">Report your first case to start tracking</string>
+    <string name="rescue_center">Rescue Center</string>
+    <string name="call_center">Call Center</string>
+    <string name="rescue_photo">Rescue Photo</string>
+</resources>

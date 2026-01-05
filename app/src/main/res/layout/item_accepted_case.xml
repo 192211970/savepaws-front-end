@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Animal Photo -->
+            <ImageView
+                android:id="@+id/ivAnimalPhoto"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/bg_rounded_image" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
+
+                <!-- Animal Type -->
+                <TextView
+                    android:id="@+id/tvAnimalType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dog"
+                    android:textColor="#0F172A"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <!-- Case ID -->
+                <TextView
+                    android:id="@+id/tvCaseId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Case #123"
+                    android:textColor="#3B82F6"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <!-- Condition -->
+                <TextView
+                    android:id="@+id/tvCondition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Injured"
+                    android:textColor="#6B7280"
+                    android:textSize="14sp" />
+
+                <!-- Accepted Time -->
+                <TextView
+                    android:id="@+id/tvAcceptedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accepted 2h ago"
+                    android:textColor="#9CA3AF"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!-- Status Badge -->
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="In Progress"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_badge_standard" />
+
+        </LinearLayout>
+
+        <!-- Progress Indicators -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center">
+
+            <!-- Reached -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/ivReached"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_location"
+                    app:tint="#D1D5DB" />
+
+                <TextView
+                    android:id="@+id/tvReached"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reached"
+                    android:textSize="10sp"
+                    android:textColor="#9CA3AF" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/lineReached"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:background="#D1D5DB"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Spotted -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/ivSpotted"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_track"
+                    app:tint="#D1D5DB" />
+
+                <TextView
+                    android:id="@+id/tvSpotted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Spotted"
+                    android:textSize="10sp"
+                    android:textColor="#9CA3AF" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/lineSpotted"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:background="#D1D5DB"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Rescued -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/ivRescued"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_heart"
+                    app:tint="#D1D5DB" />
+
+                <TextView
+                    android:id="@+id/tvRescued"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rescued"
+                    android:textSize="10sp"
+                    android:textColor="#9CA3AF" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Action Button -->
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="12dp"
+            android:text="Update Progress"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#14B66A"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

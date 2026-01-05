@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#F6FFFA"
+    android:padding="24dp">
+
+    <!-- Icon -->
+    <ImageView
+        android:id="@+id/icon_heart"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_heart"
+        android:background="@drawable/circle_bg"
+        android:padding="30dp" />
+
+    <!-- App Name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SAVE PAWS"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#1F2937"
+        android:layout_marginTop="16dp" />
+
+    <!-- Savior Button -->
+    <Button
+        android:id="@+id/btnSavior"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Savior"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#10B981"
+        android:layout_marginTop="60dp"
+        android:elevation="6dp" />
+
+    <!-- Rescue Button -->
+    <Button
+        android:id="@+id/btnRescue"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Rescue"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#10B981"
+        android:layout_marginTop="24dp"
+        android:elevation="6dp" />
+
+</LinearLayout>

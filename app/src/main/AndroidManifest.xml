@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions (MUST be outside <application>) -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Saveparse">
+
+        <!-- Splash Screen as Launcher -->
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".RoleSelectionActivity" />
+        <activity android:name=".RegisterUserActivity"/>
+        <activity android:name=".UserDashboardActivity" />
+        <activity android:name=".RegisterOrganizationActivity"/>
+        <activity android:name=".ReportCaseActivity" />
+        <activity android:name=".CaseRegisteredSuccessActivity" />
+        <activity android:name=".OngoingCasesActivity" />
+        <activity android:name=".CaseTrackActivity" />
+        <activity android:name=".DonationListActivity" />
+        <activity android:name=".DonationDetailsActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".UserCaseHistoryActivity" />
+        <activity android:name=".UserDonationHistoryActivity" />
+        <activity android:name=".CenterDetailsActivity" />
+        <activity android:name=".CenterDashboardActivity" />
+        <activity android:name=".PendingCasesActivity" />
+        <activity android:name=".AcceptedCasesActivity" />
+        <activity android:name=".UpdateRescueActivity" />
+        <activity android:name=".CaseDetailActivity" />
+        <activity android:name=".DonationMenuActivity" />
+        <activity android:name=".RaiseDonationActivity" />
+        <activity android:name=".DonationStatusActivity" />
+        <activity android:name=".CenterProfileActivity" />
+        <activity android:name=".CenterCasesHandledActivity" />
+        <activity android:name=".CenterDonationsReceivedActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+
+    </application>
+
+</manifest>

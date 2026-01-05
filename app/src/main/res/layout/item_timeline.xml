@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <!-- Timeline Indicator Column -->
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Top Line -->
+        <View
+            android:id="@+id/lineTop"
+            android:layout_width="3dp"
+            android:layout_height="20dp"
+            android:background="#4CAF50" />
+
+        <!-- Circle Indicator -->
+        <View
+            android:id="@+id/circleIndicator"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/timeline_circle_completed" />
+
+        <!-- Bottom Line -->
+        <View
+            android:id="@+id/lineBottom"
+            android:layout_width="3dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#4CAF50" />
+
+    </LinearLayout>
+
+    <!-- Content Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Case Reported"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#333333" />
+
+            <!-- Description -->
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="You reported an injured dog"
+                android:textSize="13sp"
+                android:textColor="#666666" />
+
+            <!-- Timestamp -->
+            <TextView
+                android:id="@+id/tvTimestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Dec 29, 2025 at 10:30 AM"
+                android:textSize="11sp"
+                android:textColor="#999999" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
