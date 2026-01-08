@@ -116,8 +116,9 @@ class AdminInProgressCasesActivity : AppCompatActivity() {
 
             // Load image
             if (!case.photo.isNullOrEmpty()) {
+                val imageUrl = ApiClient.IMAGE_BASE_URL + "uploads/" + case.photo
                 Glide.with(holder.itemView.context)
-                    .load("http://10.0.2.2/uploads/${case.photo}")
+                    .load(imageUrl)
                     .placeholder(R.drawable.ic_paw)
                     .into(holder.ivPhoto)
             }

@@ -85,13 +85,17 @@ class AdminCasesActivity : AppCompatActivity() {
                 call: Call<AdminDashboardResponse>,
                 response: Response<AdminDashboardResponse>
             ) {
+                Log.d("AdminCases", "Response: ${response.body()}")
                 if (response.isSuccessful && response.body()?.success == true) {
                     val stats = response.body()?.stats
+                    Log.d("AdminCases", "Stats: pending=${stats?.pending_cases}, in_progress=${stats?.in_progress_cases}, closed=${stats?.closed_cases}")
                     stats?.let {
                         tvPendingCount.text = it.pending_cases.toString()
                         tvInProgressCount.text = it.in_progress_cases.toString()
                         tvClosedCount.text = it.closed_cases.toString()
                     }
+                } else {
+                    Log.e("AdminCases", "Failed to load stats: ${response.code()} - ${response.errorBody()?.string()}")
                 }
             }
 

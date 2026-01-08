@@ -59,6 +59,7 @@
         <activity android:name=".CenterProfileActivity" />
         <activity android:name=".CenterCasesHandledActivity" />
         <activity android:name=".CenterDonationsReceivedActivity" />
+        <activity android:name=".CenterClosedCasesActivity" />
         
         <!-- Admin Activities -->
         <activity android:name=".AdminDashboardActivity" />
@@ -70,6 +71,8 @@
         <activity android:name=".AdminInProgressCasesActivity" />
         <activity android:name=".AdminClosedCasesActivity" />
         <activity android:name=".AdminClosedCaseDetailActivity" />
+        <activity android:name=".AdminCenterDetailActivity" />
+        <activity android:name=".AdminDonationDetailActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

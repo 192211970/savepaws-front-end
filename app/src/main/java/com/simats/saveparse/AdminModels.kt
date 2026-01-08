@@ -148,3 +148,112 @@ data class AdminClosedCasesResponse(
     val total_closed: Int?,
     val cases: List<AdminClosedCase>?
 )
+
+// =============== ADMIN CENTER DETAILS ===============
+data class AdminCenterListItem(
+    val center_id: Int,
+    val center_name: String?,
+    val phone: String?,
+    val email: String?,
+    val address: String?,
+    val is_active: String?,
+    val center_status: String?,
+    val created_at: String?,
+    val cases_handled: Int?
+)
+
+data class AdminCentersListResponse(
+    val success: Boolean,
+    val total_centers: Int?,
+    val centers: List<AdminCenterListItem>?
+)
+
+data class AdminCenterDetail(
+    val center_id: Int,
+    val center_name: String?,
+    val phone: String?,
+    val email: String?,
+    val address: String?,
+    val latitude: String?,
+    val longitude: String?,
+    val is_active: String?,
+    val center_status: String?,
+    val avg_response_time: Int?,
+    val member_since: String?
+)
+
+data class AdminCenterStats(
+    val cases_handled: Int?,
+    val donation_count: Int?,
+    val total_donation_amount: Double?
+)
+
+data class AdminCenterRecentCase(
+    val case_id: Int,
+    val type_of_animal: String?,
+    val animal_condition: String?,
+    val photo: String?,
+    val case_took_up_time: String?,
+    val rescue_status: String?
+)
+
+data class AdminCenterDetailResponse(
+    val success: Boolean,
+    val center: AdminCenterDetail?,
+    val stats: AdminCenterStats?,
+    val recent_cases: List<AdminCenterRecentCase>?
+)
+
+data class AdminCenterStatusResponse(
+    val status: String?,
+    val message: String?,
+    val center_id: Int?,
+    val center_status: String?,
+    val is_active: String?
+)
+
+// =============== ADMIN DONATIONS ===============
+data class AdminDonationListItem(
+    val donation_id: Int,
+    val center_id: Int?,
+    val case_id: Int?,
+    val center_name: String?,
+    val amount: Double?,
+    val requested_time: String?,
+    val user_id: Int?,
+    val donor_name: String?,
+    val payment_time: String?
+)
+
+data class AdminDonationsListResponse(
+    val success: Boolean,
+    val status: String?,
+    val total: Int?,
+    val donations: List<AdminDonationListItem>?
+)
+
+data class AdminDonationDetail(
+    val donation_id: Int,
+    val center_id: Int?,
+    val case_id: Int?,
+    val center_name: String?,
+    val center_phone: String?,
+    val amount: Double?,
+    val image_of_animal: String?,
+    val case_photo: String?,
+    val type_of_animal: String?,
+    val requested_time: String?,
+    val approval_status: String?,
+    val donation_status: String?,
+    val user_id: Int?,
+    val donor_name: String?,
+    val payment_time: String?,
+    val payment_method: String?,
+    val transaction_id: String?
+)
+
+data class AdminDonationDetailResponse(
+    val success: Boolean,
+    val donation: AdminDonationDetail?
+)
+

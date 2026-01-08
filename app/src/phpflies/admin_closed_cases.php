@@ -16,7 +16,9 @@ SELECT
     cs.center_id,
     cs.case_took_up_time,
     cs.status AS rescue_status,
-    cs.rescued_photo,
+    cs.rescued_animal,
+    cs.rescue_photo,
+    cs.closed_time,
     c.type_of_animal,
     c.animal_condition,
     c.photo AS original_photo,
@@ -28,7 +30,7 @@ FROM case_status cs
 JOIN cases c ON cs.case_id = c.case_id
 LEFT JOIN centers ctr ON cs.center_id = ctr.center_id
 WHERE cs.status = 'Closed'
-ORDER BY cs.case_took_up_time DESC
+ORDER BY cs.closed_time DESC
 ";
 
 $stmt = $conn->prepare($sql);
@@ -43,8 +45,10 @@ while ($row = $result->fetch_assoc()) {
         "center_id" => (int)$row['center_id'],
         "center_name" => $row['center_name'],
         "case_took_up_time" => $row['case_took_up_time'],
+        "closed_time" => $row['closed_time'],
         "rescue_status" => $row['rescue_status'],
-        "rescued_photo" => $row['rescued_photo'],
+        "rescued_animal" => $row['rescued_animal'],
+        "rescued_photo" => $row['rescue_photo'],
         "type_of_animal" => $row['type_of_animal'],
         "animal_condition" => $row['animal_condition'],
         "original_photo" => $row['original_photo'],

@@ -72,6 +72,25 @@ interface ApiService {
         @Field("payment_method") paymentMethod: String
     ): Call<PaymentResponse>
 
+    // Razorpay Integration
+    @FormUrlEncoded
+    @POST("create_razorpay_order.php")
+    fun createRazorpayOrder(
+        @Field("donation_id") donationId: Int,
+        @Field("user_id") userId: Int
+    ): Call<RazorpayOrderResponse>
+
+    @FormUrlEncoded
+    @POST("verify_razorpay_payment.php")
+    fun verifyRazorpayPayment(
+        @Field("donation_id") donationId: Int,
+        @Field("user_id") userId: Int,
+        @Field("razorpay_payment_id") razorpayPaymentId: String,
+        @Field("razorpay_order_id") razorpayOrderId: String,
+        @Field("razorpay_signature") razorpaySignature: String,
+        @Field("payment_method") paymentMethod: String
+    ): Call<RazorpayVerifyResponse>
+
     @FormUrlEncoded
     @POST("get_user_cases.php")
     fun getUserCases(
@@ -183,9 +202,6 @@ interface ApiService {
         @Query("status") status: String? = null
     ): Call<AdminCasesResponse>
 
-    @GET("admin_get_all_centers.php")
-    fun getAdminAllCenters(): Call<AdminCentersResponse>
-
     @GET("admin_get_pending_donations.php")
     fun getAdminPendingDonations(): Call<AdminDonationsResponse>
 
@@ -211,5 +227,34 @@ interface ApiService {
 
     @GET("admin_closed_cases.php")
     fun getAdminClosedCases(): Call<AdminClosedCasesResponse>
+
+    // =============== ADMIN CENTERS ENDPOINTS ===============
+
+    @GET("admin_all_centers.php")
+    fun getAdminAllCenters(): Call<AdminCentersListResponse>
+
+    @GET("admin_center_details.php")
+    fun getAdminCenterDetails(
+        @Query("center_id") centerId: Int
+    ): Call<AdminCenterDetailResponse>
+
+    @FormUrlEncoded
+    @POST("managing.php")
+    fun updateCenterStatus(
+        @Field("center_id") centerId: Int,
+        @Field("center_status") centerStatus: String
+    ): Call<AdminCenterStatusResponse>
+
+    // =============== ADMIN DONATIONS ENDPOINTS ===============
+
+    @GET("admin_donations_list.php")
+    fun getAdminDonationsList(
+        @Query("status") status: String
+    ): Call<AdminDonationsListResponse>
+
+    @GET("admin_donation_details.php")
+    fun getAdminDonationDetails(
+        @Query("donation_id") donationId: Int
+    ): Call<AdminDonationDetailResponse>
 
 }

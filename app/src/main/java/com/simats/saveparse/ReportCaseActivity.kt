@@ -34,6 +34,7 @@ class ReportCaseActivity : AppCompatActivity() {
     private lateinit var imageFile: File
     private lateinit var imageUri: Uri
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -82,6 +83,15 @@ class ReportCaseActivity : AppCompatActivity() {
                 }
             }
 
+        cameraPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    launchCamera()
+                } else {
+                    toast("Camera permission is required to take photos")
+                }
+            }
+
         cardUpload.setOnClickListener { openCamera() }
 
         btnSubmit.setOnClickListener {
@@ -125,6 +135,20 @@ class ReportCaseActivity : AppCompatActivity() {
     }
 
     private fun openCamera() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                launchCamera()
+            }
+            else -> {
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+        }
+    }
+
+    private fun launchCamera() {
         imageFile = File(cacheDir, "case_${System.currentTimeMillis()}.jpg")
         imageUri = FileProvider.getUriForFile(this, "$packageName.provider", imageFile)
         cameraLauncher.launch(imageUri)

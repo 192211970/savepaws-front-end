@@ -67,6 +67,11 @@ class CenterDashboardActivity : AppCompatActivity() {
             startActivity(Intent(this, DonationMenuActivity::class.java))
         }
 
+        // Closed Cases navigation card
+        findViewById<CardView>(R.id.cardClosedCases).setOnClickListener {
+            startActivity(Intent(this, CenterClosedCasesActivity::class.java))
+        }
+
         // Bottom navigation
         bottomNav = findViewById(R.id.bottomNav)
         bottomNav.setOnItemSelectedListener { item ->
@@ -116,7 +121,7 @@ class CenterDashboardActivity : AppCompatActivity() {
                 }
             })
 
-        // Load accepted cases count
+        // Load accepted cases count (in progress only)
         ApiClient.api.getCenterAcceptedCases(centerId)
             .enqueue(object : Callback<AcceptedCasesResponse> {
                 override fun onResponse(
@@ -125,14 +130,29 @@ class CenterDashboardActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful && response.body() != null) {
                         val data = response.body()!!
-                        tvAcceptedCount.text = data.in_progress_count.toString()
-                        
-                        // Calculate total handled (closed cases)
-                        tvTotalHandled.text = data.closed_count.toString()
+                        tvAcceptedCount.text = data.total_accepted.toString()
                     }
                 }
 
                 override fun onFailure(call: Call<AcceptedCasesResponse>, t: Throwable) {
+                    // Silent fail for dashboard
+                }
+            })
+
+        // Load closed/handled cases count from profile
+        ApiClient.api.getCenterProfile(centerId)
+            .enqueue(object : Callback<CenterProfileResponse> {
+                override fun onResponse(
+                    call: Call<CenterProfileResponse>,
+                    response: Response<CenterProfileResponse>
+                ) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        val handledCount = response.body()?.handled_cases?.size ?: 0
+                        tvTotalHandled.text = handledCount.toString()
+                    }
+                }
+
+                override fun onFailure(call: Call<CenterProfileResponse>, t: Throwable) {
                     // Silent fail for dashboard
                 }
             })

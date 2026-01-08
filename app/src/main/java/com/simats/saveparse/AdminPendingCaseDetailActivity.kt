@@ -65,8 +65,9 @@ class AdminPendingCaseDetailActivity : AppCompatActivity() {
         // Load image
         val ivPhoto = findViewById<ImageView>(R.id.ivAnimalPhoto)
         if (!photo.isNullOrEmpty()) {
+            val imageUrl = ApiClient.IMAGE_BASE_URL + "uploads/" + photo
             Glide.with(this)
-                .load("http://10.0.2.2/uploads/$photo")
+                .load(imageUrl)
                 .placeholder(R.drawable.ic_paw)
                 .into(ivPhoto)
         }

@@ -346,14 +346,18 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- TOTAL CASES HANDLED (smaller) -->
+            <!-- CLOSED CASES / TOTAL CASES HANDLED (Navigation Card) -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardClosedCases"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="3dp"
-                app:cardBackgroundColor="#F3E5F5">
+                app:cardBackgroundColor="#F3E5F5"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -365,7 +369,7 @@
                     <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:src="@drawable/ic_heart"
+                        android:src="@drawable/ic_check"
                         app:tint="#AB47BC" />
 
                     <LinearLayout
@@ -378,9 +382,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Cases Handled"
+                            android:text="Closed Cases"
                             android:textColor="#6A1B9A"
-                            android:textSize="12sp" />
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="View completed rescues"
+                            android:textColor="#9575CD"
+                            android:textSize="11sp" />
 
                     </LinearLayout>
 
@@ -392,6 +404,13 @@
                         android:textColor="#7B1FA2"
                         android:textSize="24sp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="#AB47BC" />
 
                 </LinearLayout>
 

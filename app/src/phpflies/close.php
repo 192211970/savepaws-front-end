@@ -39,7 +39,8 @@ try {
     /* 1️⃣ Update case_status */
     $stmt1 = $conn->prepare("
         UPDATE case_status
-        SET rescue_photo = ?,
+        SET rescued_animal = 'Yes',
+            rescue_photo = ?,
             closed_time = NOW(),
             status = 'Closed'
         WHERE case_id = ?

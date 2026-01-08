@@ -2,22 +2,38 @@
 header("Content-Type: application/json");
 include("db.php");
 
-// Get total cases and breakdown by status
-$casesQuery = $conn->query("
-    SELECT 
-        COUNT(*) as total_cases,
-        SUM(CASE WHEN status = 'Pending' THEN 1 ELSE 0 END) as pending_cases,
-        SUM(CASE WHEN status = 'In_Progress' THEN 1 ELSE 0 END) as in_progress_cases,
-        SUM(CASE WHEN status = 'Closed' THEN 1 ELSE 0 END) as closed_cases
-    FROM cases
-");
-$casesStats = $casesQuery->fetch_assoc();
+// Get total cases from cases table
+$totalCasesQuery = $conn->query("SELECT COUNT(*) as total_cases FROM cases");
+$totalCases = $totalCasesQuery->fetch_assoc()['total_cases'] ?? 0;
 
-// Get center counts
+// Get PENDING count - cases where status is 'Reported' (not yet accepted by any center)
+$pendingQuery = $conn->query("SELECT COUNT(*) as pending_cases FROM cases WHERE status = 'Reported'");
+$pendingCases = $pendingQuery->fetch_assoc()['pending_cases'] ?? 0;
+
+// Get IN PROGRESS count (cases that have been accepted but not closed)
+// Using case_status table: acceptance_status = 'Accepted' AND status = 'Inprogress'
+$inProgressQuery = $conn->query("
+    SELECT COUNT(*) as in_progress_cases 
+    FROM case_status 
+    WHERE acceptance_status = 'Accepted' 
+    AND status = 'Inprogress'
+");
+$inProgressCases = $inProgressQuery->fetch_assoc()['in_progress_cases'] ?? 0;
+
+// Get CLOSED count (cases that are closed/rescued)
+// Using case_status table: status = 'Closed'
+$closedQuery = $conn->query("
+    SELECT COUNT(*) as closed_cases 
+    FROM case_status 
+    WHERE status = 'Closed'
+");
+$closedCases = $closedQuery->fetch_assoc()['closed_cases'] ?? 0;
+
+// Get center counts (is_active is enum 'Yes'/'No', not 1/0)
 $centersQuery = $conn->query("
     SELECT 
         COUNT(*) as total_centers,
-        SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_centers
+        SUM(CASE WHEN is_active = 'Yes' THEN 1 ELSE 0 END) as active_centers
     FROM centers
 ");
 $centersStats = $centersQuery->fetch_assoc();
@@ -36,10 +52,10 @@ $donationsStats = $donationsQuery->fetch_assoc();
 echo json_encode([
     "success" => true,
     "stats" => [
-        "total_cases" => (int)($casesStats['total_cases'] ?? 0),
-        "pending_cases" => (int)($casesStats['pending_cases'] ?? 0),
-        "in_progress_cases" => (int)($casesStats['in_progress_cases'] ?? 0),
-        "closed_cases" => (int)($casesStats['closed_cases'] ?? 0),
+        "total_cases" => (int)$totalCases,
+        "pending_cases" => (int)$pendingCases,
+        "in_progress_cases" => (int)$inProgressCases,
+        "closed_cases" => (int)$closedCases,
         "total_centers" => (int)($centersStats['total_centers'] ?? 0),
         "active_centers" => (int)($centersStats['active_centers'] ?? 0),
         "total_donations" => (int)($donationsStats['total_donations'] ?? 0),

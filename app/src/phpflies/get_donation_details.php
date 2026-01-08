@@ -9,22 +9,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Database connection
-$host = 'localhost';
-$dbname = 'savepaws';
-$username = 'root';
-$password = '';
-
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Database connection failed: ' . $e->getMessage()
-    ]);
-    exit;
-}
+include("db.php");
 
 // Check for donation_id
 if (!isset($_POST['donation_id']) || empty($_POST['donation_id'])) {
@@ -52,24 +37,25 @@ try {
             d.payment_method,
             d.transaction_id,
             d.payment_time,
-            c.center_name,
-            c.phone AS center_phone,
-            c.address AS center_address,
-            c.email AS center_email,
-            cs.type_of_animal,
-            cs.animal_condition,
-            cs.photo AS case_photo,
-            cs.status AS case_status
+            rc.center_name,
+            rc.phone AS center_phone,
+            rc.address AS center_address,
+            rc.email AS center_email,
+            c.type_of_animal,
+            c.animal_condition,
+            c.photo AS case_photo,
+            c.status AS case_status
         FROM donations d
-        LEFT JOIN centers c ON d.center_id = c.center_id
-        LEFT JOIN cases cs ON d.case_id = cs.case_id
-        WHERE d.donation_id = :donation_id
+        LEFT JOIN rescue_centers rc ON d.center_id = rc.center_id
+        LEFT JOIN cases c ON d.case_id = c.case_id
+        WHERE d.donation_id = ?
     ";
     
     $stmt = $conn->prepare($query);
-    $stmt->bindParam(':donation_id', $donation_id, PDO::PARAM_INT);
+    $stmt->bind_param("i", $donation_id);
     $stmt->execute();
-    $donation = $stmt->fetch(PDO::FETCH_ASSOC);
+    $result = $stmt->get_result();
+    $donation = $result->fetch_assoc();
     
     if ($donation) {
         echo json_encode([
@@ -104,12 +90,10 @@ try {
         ]);
     }
     
-} catch(PDOException $e) {
+} catch(Exception $e) {
     echo json_encode([
         'success' => false,
         'message' => 'Query failed: ' . $e->getMessage()
     ]);
 }
-
-$conn = null;
 ?>

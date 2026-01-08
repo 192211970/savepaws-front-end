@@ -39,19 +39,25 @@
 
     </LinearLayout>
 
-    <!-- Tab Layout for Critical/Standard -->
+    <!-- Tab Layout for Critical/Standard (Line indicator) -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_below="@+id/header"
-        android:background="@android:color/white"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
         app:tabIndicatorColor="#14B66A"
+        app:tabIndicatorHeight="3dp"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorGravity="bottom"
         app:tabSelectedTextColor="#14B66A"
         app:tabTextColor="#666666"
         app:tabMode="fixed"
         app:tabGravity="fill"
-        android:elevation="4dp" />
+        app:tabTextAppearance="@style/TabTextAppearance"
+        app:tabRippleColor="@android:color/transparent" />
 
     <!-- ViewPager for slides -->
     <androidx.viewpager2.widget.ViewPager2

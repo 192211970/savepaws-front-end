@@ -13,7 +13,7 @@ if (!$center_id) {
     exit;
 }
 
-// Get accepted/in-progress cases for this center
+// Get accepted/in-progress cases for this center (exclude closed)
 $stmt = $conn->prepare("
     SELECT 
         cs.status_id,
@@ -34,8 +34,8 @@ $stmt = $conn->prepare("
     JOIN cases c ON cs.case_id = c.case_id
     WHERE cs.center_id = ?
       AND cs.acceptance_status = 'Accepted'
+      AND cs.status != 'Closed'
     ORDER BY 
-        CASE WHEN cs.status = 'Inprogress' THEN 0 ELSE 1 END,
         cs.case_took_up_time DESC
 ");
 

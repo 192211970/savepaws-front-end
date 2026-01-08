@@ -9,22 +9,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Database connection
-$host = 'localhost';
-$dbname = 'savepaws';
-$username = 'root';
-$password = '';
-
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Database connection failed: ' . $e->getMessage()
-    ]);
-    exit;
-}
+include("db.php");
 
 try {
     // Query to fetch approved donations that are not paid
@@ -38,46 +23,44 @@ try {
             d.requested_time,
             d.approval_status,
             d.donation_status,
-            c.center_name,
-            c.phone AS center_phone,
-            cs.type_of_animal,
-            cs.animal_condition,
-            cs.photo AS case_photo
+            rc.center_name,
+            rc.phone AS center_phone,
+            c.type_of_animal,
+            c.animal_condition,
+            c.photo AS case_photo
         FROM donations d
-        LEFT JOIN centers c ON d.center_id = c.center_id
-        LEFT JOIN cases cs ON d.case_id = cs.case_id
+        LEFT JOIN rescue_centers rc ON d.center_id = rc.center_id
+        LEFT JOIN cases c ON d.case_id = c.case_id
         WHERE d.approval_status = 'Approved' 
         AND (d.donation_status IS NULL OR d.donation_status != 'Paid')
         ORDER BY d.requested_time DESC
     ";
     
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
-    $donations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $result = $conn->query($query);
     
-    if (count($donations) > 0) {
-        $formattedDonations = [];
-        foreach ($donations as $donation) {
-            $formattedDonations[] = [
-                'donation_id' => intval($donation['donation_id']),
-                'center_id' => intval($donation['center_id']),
-                'case_id' => intval($donation['case_id']),
-                'image_of_animal' => $donation['image_of_animal'],
-                'amount' => floatval($donation['amount']),
-                'requested_time' => $donation['requested_time'],
-                'center_name' => $donation['center_name'],
-                'center_phone' => $donation['center_phone'],
-                'animal_type' => $donation['type_of_animal'],
-                'animal_condition' => $donation['animal_condition'],
-                'case_photo' => $donation['case_photo']
+    if ($result && $result->num_rows > 0) {
+        $donations = [];
+        while ($row = $result->fetch_assoc()) {
+            $donations[] = [
+                'donation_id' => intval($row['donation_id']),
+                'center_id' => intval($row['center_id']),
+                'case_id' => intval($row['case_id']),
+                'image_of_animal' => $row['image_of_animal'],
+                'amount' => floatval($row['amount']),
+                'requested_time' => $row['requested_time'],
+                'center_name' => $row['center_name'],
+                'center_phone' => $row['center_phone'],
+                'animal_type' => $row['type_of_animal'],
+                'animal_condition' => $row['animal_condition'],
+                'case_photo' => $row['case_photo']
             ];
         }
         
         echo json_encode([
             'success' => true,
             'message' => 'Donations fetched successfully',
-            'total_donations' => count($formattedDonations),
-            'donations' => $formattedDonations
+            'total_donations' => count($donations),
+            'donations' => $donations
         ]);
     } else {
         echo json_encode([
@@ -88,12 +71,10 @@ try {
         ]);
     }
     
-} catch(PDOException $e) {
+} catch(Exception $e) {
     echo json_encode([
         'success' => false,
         'message' => 'Query failed: ' . $e->getMessage()
     ]);
 }
-
-$conn = null;
 ?>

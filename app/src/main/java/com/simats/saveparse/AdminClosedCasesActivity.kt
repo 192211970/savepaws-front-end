@@ -121,10 +121,15 @@ class AdminClosedCasesActivity : AppCompatActivity() {
             holder.tvReportedTime.text = "By ${case.center_name ?: "Center"} • ${formatDate(case.case_took_up_time)}"
 
             // Load rescued photo if available, otherwise original
+            // Note: rescued_photo already contains "uploads/" prefix from database
             val photoUrl = if (!case.rescued_photo.isNullOrEmpty()) {
-                "http://10.0.2.2/uploads/${case.rescued_photo}"
+                if (case.rescued_photo.startsWith("uploads/")) {
+                    ApiClient.IMAGE_BASE_URL + case.rescued_photo
+                } else {
+                    ApiClient.IMAGE_BASE_URL + "uploads/" + case.rescued_photo
+                }
             } else if (!case.original_photo.isNullOrEmpty()) {
-                "http://10.0.2.2/uploads/${case.original_photo}"
+                ApiClient.IMAGE_BASE_URL + "uploads/" + case.original_photo
             } else null
 
             if (photoUrl != null) {

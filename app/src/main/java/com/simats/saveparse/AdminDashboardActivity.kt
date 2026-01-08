@@ -78,8 +78,10 @@ class AdminDashboardActivity : AppCompatActivity() {
                 call: Call<AdminDashboardResponse>,
                 response: Response<AdminDashboardResponse>
             ) {
+                Log.d("AdminDashboard", "Response: ${response.body()}")
                 if (response.isSuccessful && response.body()?.success == true) {
                     val stats = response.body()?.stats
+                    Log.d("AdminDashboard", "Stats: total=${stats?.total_cases}, pending=${stats?.pending_cases}, centers=${stats?.active_centers}")
                     stats?.let {
                         tvTotalCases.text = it.total_cases.toString()
                         tvActiveCenters.text = it.active_centers.toString()

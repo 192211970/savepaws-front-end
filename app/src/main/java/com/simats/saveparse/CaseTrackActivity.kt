@@ -147,13 +147,15 @@ class CaseTrackActivity : AppCompatActivity() {
         tvStatus.background.setTint(statusColor)
 
         // Load photo
-        val imageUrl = "${ApiClient.retrofit.baseUrl()}uploads/$photo"
-        Glide.with(this)
-            .load(imageUrl)
-            .placeholder(R.drawable.ic_alert)
-            .error(R.drawable.ic_alert)
-            .centerCrop()
-            .into(ivAnimalPhoto)
+        if (photo.isNotEmpty()) {
+            val imageUrl = ApiClient.IMAGE_BASE_URL + "uploads/" + photo
+            Glide.with(this)
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_alert)
+                .error(R.drawable.ic_alert)
+                .centerCrop()
+                .into(ivAnimalPhoto)
+        }
     }
 
     private fun fetchCaseTrack(caseId: Int, showLoading: Boolean = true) {
@@ -172,6 +174,34 @@ class CaseTrackActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body()?.success == true) {
                     val trackData = response.body()!!
                     
+                    // Update header with case info from API if available
+                    trackData.caseInfo?.let { info ->
+                        tvAnimalType.text = info.typeOfAnimal
+                        tvCondition.text = info.animalCondition
+                        tvCaseId.text = "Case #${info.caseId}"
+                        tvStatus.text = info.caseStatus
+                        
+                        // Status color
+                        val statusColor = when (info.caseStatus) {
+                            "Reported" -> ContextCompat.getColor(this@CaseTrackActivity, android.R.color.holo_orange_dark)
+                            "Accepted" -> ContextCompat.getColor(this@CaseTrackActivity, android.R.color.holo_green_dark)
+                            "Closed" -> ContextCompat.getColor(this@CaseTrackActivity, android.R.color.darker_gray)
+                            else -> ContextCompat.getColor(this@CaseTrackActivity, android.R.color.holo_blue_dark)
+                        }
+                        tvStatus.background.setTint(statusColor)
+                        
+                        // Load photo from API response
+                        if (!info.photo.isNullOrEmpty()) {
+                            val imageUrl = ApiClient.IMAGE_BASE_URL + "uploads/" + info.photo
+                            Glide.with(this@CaseTrackActivity)
+                                .load(imageUrl)
+                                .placeholder(R.drawable.ic_alert)
+                                .error(R.drawable.ic_alert)
+                                .centerCrop()
+                                .into(ivAnimalPhoto)
+                        }
+                    }
+                    
                     // Build timeline
                     timelineContainer.visibility = View.VISIBLE
                     buildTimeline(trackData.timeline)
@@ -186,7 +216,7 @@ class CaseTrackActivity : AppCompatActivity() {
                             // Show rescue photo if available
                             if (!info.rescuePhoto.isNullOrEmpty()) {
                                 cardRescuePhoto.visibility = View.VISIBLE
-                                val photoUrl = "${ApiClient.retrofit.baseUrl()}${info.rescuePhoto}"
+                                val photoUrl = ApiClient.IMAGE_BASE_URL + info.rescuePhoto
                                 Glide.with(this@CaseTrackActivity)
                                     .load(photoUrl)
                                     .placeholder(R.drawable.ic_alert)
@@ -196,22 +226,25 @@ class CaseTrackActivity : AppCompatActivity() {
                     }
                 } else if (showLoading) {
                     // Only show error toast on initial load, not on background refresh
+                    val errorMsg = response.body()?.message ?: "Unknown error (code: ${response.code()})"
+                    android.util.Log.e("CaseTrack", "Failed to load: $errorMsg, body: ${response.errorBody()?.string()}")
                     Toast.makeText(
                         this@CaseTrackActivity,
-                        "Failed to load tracking info",
-                        Toast.LENGTH_SHORT
+                        "Failed to load: $errorMsg",
+                        Toast.LENGTH_LONG
                     ).show()
                 }
             }
 
             override fun onFailure(call: Call<CaseTrackResponse>, t: Throwable) {
                 progressBar.visibility = View.GONE
+                android.util.Log.e("CaseTrack", "Network error", t)
                 if (showLoading) {
                     // Only show error toast on initial load, not on background refresh
                     Toast.makeText(
                         this@CaseTrackActivity,
                         "Network error: ${t.message}",
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_LONG
                     ).show()
                 }
             }

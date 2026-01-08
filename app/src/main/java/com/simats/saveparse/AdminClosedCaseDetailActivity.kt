@@ -37,9 +37,16 @@ class AdminClosedCaseDetailActivity : AppCompatActivity() {
 
         // Load rescued photo
         val ivRescuedPhoto = findViewById<ImageView>(R.id.ivRescuedPhoto)
+        // Note: rescued_photo may already contain "uploads/" prefix from database
         val photoUrl = when {
-            !rescuedPhoto.isNullOrEmpty() -> "http://10.0.2.2/uploads/$rescuedPhoto"
-            !originalPhoto.isNullOrEmpty() -> "http://10.0.2.2/uploads/$originalPhoto"
+            !rescuedPhoto.isNullOrEmpty() -> {
+                if (rescuedPhoto.startsWith("uploads/")) {
+                    ApiClient.IMAGE_BASE_URL + rescuedPhoto
+                } else {
+                    ApiClient.IMAGE_BASE_URL + "uploads/" + rescuedPhoto
+                }
+            }
+            !originalPhoto.isNullOrEmpty() -> ApiClient.IMAGE_BASE_URL + "uploads/" + originalPhoto
             else -> null
         }
 
