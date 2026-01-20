@@ -49,6 +49,13 @@ interface ApiService {
     ): Call<OngoingCasesResponse>
 
     @FormUrlEncoded
+    @POST("get_ongoing_cases.php")
+    fun getUserCasesByStatus(
+        @Field("user_id") userId: Int,
+        @Field("status") status: String
+    ): Call<OngoingCasesResponse>
+
+    @FormUrlEncoded
     @POST("get_case_track.php")
     fun getCaseTrack(
         @Field("case_id") caseId: Int
@@ -257,4 +264,33 @@ interface ApiService {
         @Query("donation_id") donationId: Int
     ): Call<AdminDonationDetailResponse>
 
+    // Get Admin Contact Info
+    @GET("get_admin_contact.php")
+    fun getAdminContact(): Call<AdminContactResponse>
+
+    @FormUrlEncoded
+    @POST("update_fcm_token.php")
+    fun updateFcmToken(
+        @Field("user_id") userId: Int,
+        @Field("fcm_token") token: String
+    ): Call<RegisterResponse>
+    @FormUrlEncoded
+    @POST("forgot_password.php")
+    fun forgotPassword(
+        @Field("email") email: String
+    ): Call<CommonResponse>
+
+    @FormUrlEncoded
+    @POST("verify_otp.php")
+    fun verifyOtp(
+        @Field("email") email: String,
+        @Field("otp") otp: String
+    ): Call<CommonResponse>
+
+    @FormUrlEncoded
+    @POST("reset_password.php")
+    fun resetPassword(
+        @Field("email") email: String,
+        @Field("new_password") newPass: String
+    ): Call<CommonResponse>
 }

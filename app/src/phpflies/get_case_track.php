@@ -89,8 +89,11 @@ $statusQuery = "
         cs.acceptance_status,
         cs.case_took_up_time,
         cs.reached_location,
+        cs.reached_time,
         cs.spot_animal,
+        cs.spotted_time,
         cs.rescued_animal,
+        cs.rescued_time,
         cs.rescue_photo,
         cs.closed_time,
         cs.status AS rescue_status,
@@ -156,7 +159,7 @@ $timeline[] = [
     'description' => $reachedLocation 
         ? 'Rescue team reached the reported location'
         : 'Rescue team is on the way',
-    'timestamp' => null,
+    'timestamp' => $reachedLocation ? ($rescueStatus['reached_time'] ?? null) : null,
     'status' => $reachedLocation ? 'completed' : 'pending',
     'icon' => 'location'
 ];
@@ -168,7 +171,7 @@ $timeline[] = [
     'description' => $spottedAnimal 
         ? 'Rescue team spotted the animal'
         : 'Searching for the animal',
-    'timestamp' => null,
+    'timestamp' => $spottedAnimal ? ($rescueStatus['spotted_time'] ?? null) : null,
     'status' => $spottedAnimal ? 'completed' : 'pending',
     'icon' => 'spot'
 ];
@@ -180,10 +183,9 @@ $timeline[] = [
     'description' => $rescuedAnimal 
         ? 'Animal has been safely rescued!'
         : 'Rescue in progress',
-    'timestamp' => null,
+    'timestamp' => $rescuedAnimal ? ($rescueStatus['rescued_time'] ?? null) : null,
     'status' => $rescuedAnimal ? 'completed' : 'pending',
-    'icon' => 'rescue',
-    'rescue_photo' => $rescuedAnimal ? ($rescueStatus['rescue_photo'] ?? null) : null
+    'icon' => 'rescue'
 ];
 
 // Step 5: Closed Case

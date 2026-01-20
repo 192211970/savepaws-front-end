@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -20,6 +21,7 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Saveparse">
 
         <!-- Splash Screen as Launcher -->
@@ -36,6 +38,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".RoleSelectionActivity" />
         <activity android:name=".RegisterUserActivity"/>
+        <activity android:name=".ForgotPasswordActivity"/>
+        <activity android:name=".VerifyOtpActivity"/>
         <activity android:name=".UserDashboardActivity" />
         <activity android:name=".RegisterOrganizationActivity"/>
         <activity android:name=".ReportCaseActivity" />
@@ -73,7 +77,15 @@
         <activity android:name=".AdminClosedCaseDetailActivity" />
         <activity android:name=".AdminCenterDetailActivity" />
         <activity android:name=".AdminDonationDetailActivity" />
+        <activity android:name=".SubscriptionActivity"/>
 
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

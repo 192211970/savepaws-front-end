@@ -14,10 +14,11 @@ if (!$case_id || !$center_id) {
     exit;
 }
 
-// Update reached_location → YES
+// Update reached_location → YES and set timestamp
 $update = $conn->prepare("
     UPDATE case_status
-    SET reached_location = 'Yes'
+    SET reached_location = 'Yes',
+        reached_time = NOW()
     WHERE case_id = ?
       AND center_id = ?
       AND status = 'Inprogress'
@@ -33,6 +34,32 @@ if ($update->affected_rows === 0) {
         "message" => "Already updated or case not found"
     ]);
     exit;
+}
+
+/* =================================================
+   🔔 SEND NOTIFICATION TO USER
+   ================================================= */
+include_once 'send_notification.php';
+
+// Get User ID and Token
+$uQuery = $conn->prepare("
+    SELECT u.fcm_token 
+    FROM cases c 
+    JOIN users u ON c.user_id = u.id 
+    WHERE c.case_id = ?
+");
+$uQuery->bind_param("i", $case_id);
+$uQuery->execute();
+$uResult = $uQuery->get_result();
+
+if ($uRow = $uResult->fetch_assoc()) {
+    if (!empty($uRow['fcm_token'])) {
+        sendNotification(
+            $uRow['fcm_token'],
+            "Rescuer Reached!",
+            "The rescue team has reached the location."
+        );
+    }
 }
 
 echo json_encode([

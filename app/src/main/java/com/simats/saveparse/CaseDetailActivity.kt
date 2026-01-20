@@ -103,6 +103,47 @@ class CaseDetailActivity : AppCompatActivity() {
         btnReject.setOnClickListener {
             handleReject()
         }
+
+        // Contact Admin button
+        val btnContactAdmin = findViewById<Button>(R.id.btnContactAdmin)
+        btnContactAdmin.setOnClickListener {
+            // Fetch admin phone from backend
+            ApiClient.api.getAdminContact().enqueue(object : Callback<AdminContactResponse> {
+                override fun onResponse(
+                    call: Call<AdminContactResponse>,
+                    response: Response<AdminContactResponse>
+                ) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        val adminPhone = response.body()?.admin?.phone
+                        if (!adminPhone.isNullOrEmpty()) {
+                            val intent = Intent(Intent.ACTION_DIAL)
+                            intent.data = Uri.parse("tel:$adminPhone")
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(
+                                this@CaseDetailActivity,
+                                "Admin contact not available",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@CaseDetailActivity,
+                            "Failed to get admin contact",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<AdminContactResponse>, t: Throwable) {
+                    Toast.makeText(
+                        this@CaseDetailActivity,
+                        "Network error: ${t.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        }
     }
 
     private fun acceptCase() {

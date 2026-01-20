@@ -264,12 +264,32 @@ class CaseTrackActivity : AppCompatActivity() {
             val tvTitle = timelineView.findViewById<TextView>(R.id.tvTitle)
             val tvDescription = timelineView.findViewById<TextView>(R.id.tvDescription)
             val tvTimestamp = timelineView.findViewById<TextView>(R.id.tvTimestamp)
+            val cardRescuePhotoTimeline = timelineView.findViewById<CardView>(R.id.cardRescuePhoto)
+            val ivRescuePhotoTimeline = timelineView.findViewById<ImageView>(R.id.ivRescuePhoto)
 
             // Set content
             tvTitle.text = item.title
             tvDescription.text = item.description
             tvTimestamp.text = formatTimestamp(item.timestamp)
             tvTimestamp.visibility = if (item.timestamp.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+            // Show rescue photo in timeline if available (for Closed Case step)
+            if (!item.rescuePhoto.isNullOrEmpty()) {
+                cardRescuePhotoTimeline.visibility = View.VISIBLE
+                val photoUrl = if (item.rescuePhoto.startsWith("uploads/")) {
+                    ApiClient.IMAGE_BASE_URL + item.rescuePhoto
+                } else {
+                    ApiClient.IMAGE_BASE_URL + "uploads/" + item.rescuePhoto
+                }
+                Glide.with(this@CaseTrackActivity)
+                    .load(photoUrl)
+                    .placeholder(R.drawable.ic_paw)
+                    .error(R.drawable.ic_paw)
+                    .centerCrop()
+                    .into(ivRescuePhotoTimeline)
+            } else {
+                cardRescuePhotoTimeline.visibility = View.GONE
+            }
 
             // Check if current step is completed (based only on status from server)
             val isCompleted = item.status == "completed"

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "734812183485",
+    "project_id": "savepaws-b4d5b",
+    "storage_bucket": "savepaws-b4d5b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734812183485:android:387ada75a0ab5caa9290d4",
+        "android_client_info": {
+          "package_name": "com.simats.saveparse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtLIUtb9qa4bz1cTfyiGv0gbG_furfH34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

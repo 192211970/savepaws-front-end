@@ -91,6 +91,19 @@ while ($case = $caseResult->fetch_assoc()) {
     $insertEsc->execute();
 
     $escalatedCases[] = $case_id;
+
+    /* 🔔 NOTIFY ADMIN (DELAYED CASE) */
+    include_once 'send_notification.php';
+    $adminQ = $conn->query("SELECT fcm_token FROM users WHERE user_type = 'Admin' LIMIT 1");
+    if ($adminRow = $adminQ->fetch_assoc()) {
+        if (!empty($adminRow['fcm_token'])) {
+            sendNotification(
+                $adminRow['fcm_token'],
+                "High Alert: Delayed Case",
+                "Case #$case_id has not been picked up for over 60 mins. Escalated again."
+            );
+        }
+    }
 }
 
 /*******************************************

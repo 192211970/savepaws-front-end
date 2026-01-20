@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json");
 include("db.php");
+include("send_notification.php");
 
 // Handle photo upload
 if (isset($_FILES['photo'])) {
@@ -35,14 +36,15 @@ if (!$photoName || !$type || !$condition || !$lat || !$lng || !$user_id) {
 $radius_km = 10;
 
 $centerQuery = "
-SELECT center_id, center_name, latitude, longitude,
+SELECT c.center_id, c.center_name, c.latitude, c.longitude, u.fcm_token,
     (6371 * ACOS(
-        COS(RADIANS(?)) * COS(RADIANS(latitude)) *
-        COS(RADIANS(longitude) - RADIANS(?)) +
-        SIN(RADIANS(?)) * SIN(RADIANS(latitude))
+        COS(RADIANS(?)) * COS(RADIANS(c.latitude)) *
+        COS(RADIANS(c.longitude) - RADIANS(?)) +
+        SIN(RADIANS(?)) * SIN(RADIANS(c.latitude))
     )) AS distance
-FROM centers
-WHERE is_active = 1
+FROM centers c
+LEFT JOIN users u ON c.email = u.email
+WHERE c.is_active = 1
 HAVING distance <= ?
 ORDER BY distance ASC
 ";
@@ -96,14 +98,15 @@ $caseStatusStmt->execute();
 if (empty($centers)) {
 
     $nearestQuery = "
-    SELECT center_id, center_name, latitude, longitude,
+    SELECT c.center_id, c.center_name, c.latitude, c.longitude, u.fcm_token,
         (6371 * ACOS(
-            COS(RADIANS(?)) * COS(RADIANS(latitude)) *
-            COS(RADIANS(longitude) - RADIANS(?)) +
-            SIN(RADIANS(?)) * SIN(RADIANS(latitude))
+            COS(RADIANS(?)) * COS(RADIANS(c.latitude)) *
+            COS(RADIANS(c.longitude) - RADIANS(?)) +
+            SIN(RADIANS(?)) * SIN(RADIANS(c.latitude))
         )) AS distance
-    FROM centers
-    WHERE is_active = 1
+    FROM centers c
+    LEFT JOIN users u ON c.email = u.email
+    WHERE c.is_active = 1
     ORDER BY distance ASC
     LIMIT 1
     ";
@@ -123,6 +126,13 @@ if (empty($centers)) {
 
         $insertEsc->bind_param("iiis", $case_id, $nearest['center_id'], $user_id, $case_type);
         $insertEsc->execute();
+
+        // --- SEND NOTIFICATION TO NEAREST CENTER ---
+        if (!empty($nearest['fcm_token'])) {
+            $notifTitle = "New Critical Case Alert";
+            $notifBody = "A critical case has been assigned to you. Case #" . $case_id;
+            sendNotification($nearest['fcm_token'], $notifTitle, $notifBody);
+        }
 
         echo json_encode([
             "status" => "success",
@@ -156,6 +166,13 @@ foreach ($centers as $c) {
 
     $insertEsc->bind_param("iiis", $case_id, $c['center_id'], $user_id, $case_type);
     $insertEsc->execute();
+
+    // --- SEND NOTIFICATION TO CENTER ---
+    if (!empty($c['fcm_token'])) {
+        $notifTitle = "New Case Request";
+        $notifBody = "A new " . $case_type . " case is near you. Case #" . $case_id;
+        sendNotification($c['fcm_token'], $notifTitle, $notifBody);
+    }
 }
 
 /*******************************************

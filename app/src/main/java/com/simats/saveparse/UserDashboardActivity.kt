@@ -16,6 +16,10 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Locale
+import com.google.firebase.messaging.FirebaseMessaging
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class UserDashboardActivity : AppCompatActivity() {
 
@@ -38,6 +42,22 @@ class UserDashboardActivity : AppCompatActivity() {
         val tvLocation = findViewById<TextView>(R.id.tvLocation)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getUserLocation(tvLocation)
+
+        /* ===== SYNC FCM TOKEN ===== */
+        val sharedPref = getSharedPreferences("SavePawsPrefs", MODE_PRIVATE)
+        val userId = sharedPref.getInt("user_id", -1)
+
+        if (userId != -1) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    ApiClient.api.updateFcmToken(userId, token).enqueue(object : Callback<RegisterResponse> {
+                        override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {}
+                        override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {}
+                    })
+                }
+            }
+        }
 
         /* ===== NAVIGATION VIEWS ===== */
         val cardReport = findViewById<androidx.cardview.widget.CardView>(R.id.cardReport)

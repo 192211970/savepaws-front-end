@@ -15,9 +15,11 @@ if (!$case_id || !$center_id) {
 }
 
 
+// Update spot_animal → YES and set timestamp
 $update = $conn->prepare("
     UPDATE case_status
-    SET spot_animal = 'Yes'
+    SET spot_animal = 'Yes',
+        spotted_time = NOW()
     WHERE case_id = ?
       AND center_id = ?
       AND status = 'Inprogress'

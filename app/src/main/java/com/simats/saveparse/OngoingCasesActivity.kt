@@ -1,42 +1,42 @@
 package com.simats.saveparse
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class OngoingCasesActivity : AppCompatActivity() {
 
-    private lateinit var rvCases: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var emptyState: LinearLayout
     private lateinit var btnBack: ImageView
     private lateinit var bottomNav: BottomNavigationView
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager: ViewPager2
+
+    private val tabTitles = arrayOf("Ongoing", "Closed")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ongoing_cases)
 
         // Initialize views
-        rvCases = findViewById(R.id.rvCases)
-        progressBar = findViewById(R.id.progressBar)
-        emptyState = findViewById(R.id.emptyState)
         btnBack = findViewById(R.id.btnBack)
         bottomNav = findViewById(R.id.bottomNav)
+        tabLayout = findViewById(R.id.tabLayout)
+        viewPager = findViewById(R.id.viewPager)
 
-        // Setup RecyclerView
-        rvCases.layoutManager = LinearLayoutManager(this)
+        // Setup ViewPager with adapter
+        viewPager.adapter = CasesPagerAdapter(this)
+
+        // Connect TabLayout with ViewPager2
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = tabTitles[position]
+        }.attach()
 
         // Back button
         btnBack.setOnClickListener {
@@ -44,7 +44,7 @@ class OngoingCasesActivity : AppCompatActivity() {
         }
 
         // Setup Bottom Navigation
-        bottomNav.selectedItemId = R.id.nav_track // Highlight Track tab
+        bottomNav.selectedItemId = R.id.nav_track
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -63,72 +63,21 @@ class OngoingCasesActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
-        // Get user ID from SharedPreferences
-        val sharedPref = getSharedPreferences("SavePawsPrefs", Context.MODE_PRIVATE)
-        val userId = sharedPref.getInt("user_id", -1)
-
-        if (userId != -1) {
-            fetchOngoingCases(userId)
-        } else {
-            Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show()
-            finish()
-        }
     }
 
-    private fun fetchOngoingCases(userId: Int) {
-        progressBar.visibility = View.VISIBLE
-        rvCases.visibility = View.GONE
-        emptyState.visibility = View.GONE
+    /**
+     * ViewPager adapter for the Ongoing/Closed tabs
+     */
+    private inner class CasesPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
 
-        ApiClient.api.getOngoingCases(userId).enqueue(object : Callback<OngoingCasesResponse> {
-            override fun onResponse(
-                call: Call<OngoingCasesResponse>,
-                response: Response<OngoingCasesResponse>
-            ) {
-                progressBar.visibility = View.GONE
+        override fun getItemCount(): Int = 2
 
-                if (response.isSuccessful && response.body()?.success == true) {
-                    val cases = response.body()?.cases ?: emptyList()
-                    
-                    if (cases.isNotEmpty()) {
-                        rvCases.visibility = View.VISIBLE
-                        emptyState.visibility = View.GONE
-                        
-                        val adapter = OngoingCasesAdapter(cases) { case ->
-                            // Navigate to CaseTrackActivity
-                            val intent = Intent(this@OngoingCasesActivity, CaseTrackActivity::class.java)
-                            intent.putExtra("case_id", case.caseId)
-                            intent.putExtra("photo", case.photo)
-                            intent.putExtra("animal_type", case.typeOfAnimal)
-                            intent.putExtra("condition", case.animalCondition)
-                            intent.putExtra("status", case.caseStatus)
-                            startActivity(intent)
-                        }
-                        rvCases.adapter = adapter
-                    } else {
-                        rvCases.visibility = View.GONE
-                        emptyState.visibility = View.VISIBLE
-                    }
-                } else {
-                    Toast.makeText(
-                        this@OngoingCasesActivity,
-                        "Failed to load cases",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    emptyState.visibility = View.VISIBLE
-                }
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> UserCasesFragment.newInstance("ongoing")
+                1 -> UserCasesFragment.newInstance("closed")
+                else -> UserCasesFragment.newInstance("ongoing")
             }
-
-            override fun onFailure(call: Call<OngoingCasesResponse>, t: Throwable) {
-                progressBar.visibility = View.GONE
-                emptyState.visibility = View.VISIBLE
-                Toast.makeText(
-                    this@OngoingCasesActivity,
-                    "Network error: ${t.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
+        }
     }
 }

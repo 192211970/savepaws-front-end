@@ -37,8 +37,21 @@ if (!isset($_POST['user_id']) || empty($_POST['user_id'])) {
 
 $user_id = intval($_POST['user_id']);
 
+// Optional status filter: "ongoing" or "closed"
+$status_filter = isset($_POST['status']) ? $_POST['status'] : '';
+
 try {
-    // Query to fetch all cases for this user with their status
+    // Build query based on status filter
+    $status_condition = "";
+    if ($status_filter === 'ongoing') {
+        // Ongoing = cases that are NOT closed
+        $status_condition = "AND c.status != 'Closed'";
+    } else if ($status_filter === 'closed') {
+        // Closed = only closed cases
+        $status_condition = "AND c.status = 'Closed'";
+    }
+
+    // Query to fetch cases for this user with optional status filter
     $query = "
         SELECT 
             c.case_id,
@@ -55,6 +68,7 @@ try {
         LEFT JOIN case_status cs ON c.case_id = cs.case_id
         LEFT JOIN centers ct ON cs.center_id = ct.center_id
         WHERE c.user_id = :user_id
+        $status_condition
         ORDER BY c.created_time DESC
     ";
     

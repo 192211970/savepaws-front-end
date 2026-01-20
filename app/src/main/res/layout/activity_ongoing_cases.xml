@@ -39,60 +39,29 @@
 
     </LinearLayout>
 
-    <!-- LOADING INDICATOR -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
-
-    <!-- EMPTY STATE -->
-    <LinearLayout
-        android:id="@+id/emptyState"
+    <!-- TabLayout - Below Header -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="32dp"
-        android:visibility="gone">
+        android:layout_below="@+id/header"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        app:tabIndicatorColor="#4CAF50"
+        app:tabIndicatorHeight="3dp"
+        app:tabSelectedTextColor="#4CAF50"
+        app:tabTextColor="#666666"
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        app:tabTextAppearance="@style/TabTextAppearance" />
 
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/ic_track"
-            android:alpha="0.5" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/no_cases_found"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#666666" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/report_first_case"
-            android:textSize="14sp"
-            android:textColor="#999999"
-            android:gravity="center" />
-
-    </LinearLayout>
-
-    <!-- CASES LIST -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCases"
+    <!-- ViewPager2 for Tab Content -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/header"
-        android:layout_above="@+id/bottomNav"
-        android:padding="12dp"
-        android:clipToPadding="false" />
+        android:layout_below="@+id/tabLayout"
+        android:layout_above="@+id/bottomNav" />
 
     <!-- BOTTOM NAVIGATION -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

@@ -257,3 +257,15 @@ data class AdminDonationDetailResponse(
     val donation: AdminDonationDetail?
 )
 
+// =============== ADMIN CONTACT ===============
+data class AdminContact(
+    val name: String?,
+    val phone: String?,
+    val email: String?
+)
+
+data class AdminContactResponse(
+    val success: Boolean,
+    val message: String?,
+    val admin: AdminContact?
+)

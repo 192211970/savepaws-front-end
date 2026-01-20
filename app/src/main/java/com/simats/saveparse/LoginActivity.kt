@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.google.firebase.messaging.FirebaseMessaging
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,9 +23,14 @@ class LoginActivity : AppCompatActivity() {
 
         btnBack.setOnClickListener { finish() }
 
-        tvRegister.setOnClickListener {
-            startActivity(Intent(this, RoleSelectionActivity::class.java))
+        // FORGOT PASSWORD
+        val tvForgot = findViewById<TextView>(R.id.tvForgot)
+        tvForgot.setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
+
+        // REGISTER LINK
+
 
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString().trim()
@@ -66,6 +72,17 @@ class LoginActivity : AppCompatActivity() {
                                 putString("user_phone", user.phone)
                                 putString("user_type", userType)
                                 apply()
+                            }
+
+                            // Update FCM Token
+                            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val token = task.result
+                                    ApiClient.api.updateFcmToken(user.id, token).enqueue(object : Callback<RegisterResponse> {
+                                        override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {}
+                                        override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {}
+                                    })
+                                }
                             }
 
                             navigateBasedOnRole(userType)

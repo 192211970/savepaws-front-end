@@ -11,7 +11,7 @@ class SplashActivity : AppCompatActivity() {
 
         // Delay 2 seconds → open LoginActivity
         android.os.Handler().postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, SubscriptionActivity::class.java))
             finish()
         }, 2000)
     }
